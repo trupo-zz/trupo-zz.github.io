@@ -34,10 +34,6 @@
 </div>
 </form>
 </section>
-<section class="cta" id="cta">
-<p class="note">burn is our free, open-source command-line tool that reads your local Claude Code logs and shows your cost at API rates by model, from your own numbers instead of guesses.</p>
-<p><a class="cta-link" href="https://github.com/trupo-zz/burn" rel="noopener" data-out>Get burn on GitHub (free)</a></p>
-</section>
 <section class="how">
 <h2>How it works</h2>
 <ul class="formulas">
@@ -54,16 +50,16 @@
 </section>
 <section class="explainer"><h2>About this tool</h2>
 <p>Claude Code sends the whole conversation back to the model on every turn: your instructions, the files it has read and every earlier tool result. With prompt caching, the part that was already sent is billed at the cache-read rate, new context at the cache-write rate, and the model&#39;s reply at the output rate. This calculator multiplies those three amounts by the published per-million-token prices for the model you pick.</p>
-<p>Cache reads are cheap per token, but there are a lot of them. On Opus 5.5 a cache read costs $0.20 per million tokens, 5% of the $4 input price, while output costs $20 per million. A session carrying 80,000 tokens of context re-reads all of it on every turn, so over hundreds of turns the re-read can rival what you pay for output. In the sample report in burn&#39;s README (one heavy user&#39;s machine), 45% of the API-equivalent cost was context re-read from the cache.</p>
+<p>Cache reads are cheap per token, but there are a lot of them. On Opus 5.5 a cache read costs $0.20 per million tokens, 5% of the $4 input price, while output costs $20 per million. A session carrying 80,000 tokens of context re-reads all of it on every turn, so over hundreds of turns the re-read can rival what you pay for output.</p>
 <p>The defaults (200 turns a day, 80k tokens of context, 4k new tokens and 1k output tokens per turn) are a starting point, not a measurement. A turn is one model call, and one request in Claude Code often takes several turns, because each tool call is a turn. Haiku 5.5 is priced higher for prompts over 100,000 tokens, and the calculator switches to that tier when the per-turn context plus new tokens passes the line; it uses your per-turn figures as an average, so real sessions with some longer turns can cost more. Cache writes are priced at the 5-minute rate; the 1-hour cache costs more.</p>
-<p>On a Pro or Max subscription you are not billed per token, so treat the result as a rough gauge of how heavy your usage is, not a bill. To replace the guesses with your own numbers, run burn on your machine: it reads the local session logs, makes no network calls and prints your cost by model and the share spent re-reading context.</p>
+<p>On a Pro or Max subscription you are not billed per token, so treat the result as a rough gauge of how heavy your usage is, not a bill.</p>
 </section>
 <section class="faq"><h2>Questions</h2>
 <h3>Why is cached context billed at all?</h3><p>The cache saves the model from reprocessing the same tokens, so cache hits are billed at a small fraction of the input price rather than free. That fraction is 5% on Opus 5.5 and Sonnet 5.5, 10% on Haiku 5.5 ($0.01 of its $0.10 input price) and 2.5% on Fable 5.1.</p>
 <h3>Do Pro and Max plans pay these prices?</h3><p>No. Subscriptions include Claude Code usage up to plan limits instead of per-token billing. These prices apply when Claude Code runs on an API key billed through the Claude Platform.</p>
 <h3>Is a turn the same as a message I type?</h3><p>No. One message can trigger many model turns, because Claude Code makes a new model call after each tool use, such as reading a file or running a command.</p>
 <h3>What are tokens, context and a turn?</h3><p>A token is a small piece of text, roughly three quarters of a word. Context is everything Claude Code sends back to the model on each call: your instructions, files it has read and earlier results. A turn is one model call. One message you type can start several turns, one per tool use.</p>
-</section><section class="sources"><h2>Sources</h2><ul><li><a href="https://platform.claude.com/docs/en/about-claude/pricing" rel="noopener">Anthropic: Claude API pricing (model and prompt-caching prices)</a> (checked 2026-10-13)</li><li><a href="https://github.com/trupo-zz/burn" rel="noopener" data-out>burn: free, open-source Claude Code cost report (GitHub)</a> (checked 2026-10-12)</li></ul></section>
+</section><section class="sources"><h2>Sources</h2><ul><li><a href="https://platform.claude.com/docs/en/about-claude/pricing" rel="noopener">Anthropic: Claude API pricing (model and prompt-caching prices)</a> (checked 2026-10-13)</li></ul></section>
 <footer class="foot">
 <p>Built by Trupo Holding Co. <a href="../">More free tools</a>.</p>
 <p class="ai">Written with AI: the text on this page was drafted with AI (Claude). The formulas are shown on the page so you can check every result.</p>

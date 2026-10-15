@@ -8,4 +8,4 @@ Free, browser-only calculators and generators, published at https://trupo-zz.git
 
 Everything here is free. There is no payment, no checkout, no sign-up and no email capture. What you type stays in your browser. The site runs no counter and sets no cookies.
 
-Built by Trupo Holding Co. This repository holds the generated static files; the prices used by the Claude tools are checked against Anthropic's public pricing page, and each page shows the date it was checked. A related free, open-source tool: [burn](https://github.com/trupo-zz/burn).
+Built by Trupo Holding Co. This repository holds the generated static files; the prices used by the Claude tools are checked against Anthropic's public pricing page, and each page shows the date it was checked.
