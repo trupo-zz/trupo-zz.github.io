@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pumpkin Stencil Generator: Carve Any Name or Word</title>
+<meta name="description" content="Type a name or short word and print carving-ready pumpkin letter stencils, scaled to your pumpkin, with bridges so the centres of the letters stay in.">
+<link rel="canonical" href="https://trupo-zz.github.io/pumpkin-stencil-generator/">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body data-page="w42-pumpkin-stencil-generator">
+<header class="top"><a href="../">Trupo Tools</a></header>
+<main>
+<h1>Pumpkin Stencil Generator: Carve Any Name or Word</h1>
+<p class="value">Free, no sign-up: turn a name or short word (up to 20 characters) into printable, carving-ready letter stencils sized to your pumpkin.</p>
+<section class="tool" id="tool">
+<link rel="stylesheet" href="../assets/custom/pumpkin-stencil/tool.css">
+<form class="calc ps-form" id="ps-form" autocomplete="off">
+<div class="field"><label for="ps-text">Name or word</label><input id="ps-text" type="text" value="BOO" maxlength="20" spellcheck="false" aria-describedby="ps-text-help"><span class="small" id="ps-text-help">1 to 20 characters: A-Z, a-z, 0-9, spaces and ! ? ' - . &amp;</span></div>
+<div class="field"><label for="ps-width">Pumpkin face width</label><input id="ps-width" type="number" value="20" min="2" max="150" step="any" inputmode="decimal" aria-describedby="ps-width-help"><select id="ps-unit" aria-label="Width unit"><option value="cm" selected>cm</option><option value="in">in</option></select><span class="small" id="ps-width-help">Measure the flattest side, edge to edge.</span></div>
+<div class="field"><label for="ps-style">Style</label><select id="ps-style"><option value="regular" selected>Regular</option><option value="chunky">Chunky: heavier letters, wider bridges</option></select></div>
+<div class="field"><label for="ps-paper">Paper</label><select id="ps-paper"><option value="letter" selected>US Letter</option><option value="a4">A4</option></select></div>
+</form>
+<div class="results ps-results">
+<p id="ps-msg" class="ps-msg" aria-live="polite">&quot;BOO&quot;: letters 12.0 cm (4.7 in) tall, on one line 15.1 cm (5.9 in) wide, printed on one sheet of US Letter.</p>
+<p class="ps-actions"><button type="button" id="ps-print">Print the stencil</button> <span class="small">In the print dialog choose 100% or "actual size", not "fit to page". Each sheet has a ruler to check.</span></p>
+<div id="ps-sheets" class="ps-sheets"><figure class="ps-sheet ps-letter"><svg xmlns="http://www.w3.org/2000/svg" class="ps-svg" width="195.9mm" height="258.4mm" viewBox="0 0 195.9 258.4" role="img" aria-labelledby="ps-title-1"><title id="ps-title-1">Sheet 1 of 1 of the pumpkin stencil for &quot;BOO&quot;: BOO, letters 12.0 cm tall</title><g fill="#d4d4d4" stroke="#000" stroke-linejoin="round"><path transform="translate(14.7 120.98) scale(0.075)" stroke-width="4.67" d="M104 0 104-1600 249-1600 249 0ZM337 0 337-130 368-130Q435-130 466-164 498-198 500-270 502-351 502-422 502-494 500-574 498-664 466-703 433-741 361-741L337-741 337-871 366-871Q433-871 465-910 497-950 498-1031 502-1112 502-1185 502-1258 498-1338 497-1406 465-1438 433-1470 368-1470L337-1470 337-1600 368-1600Q511-1600 576-1538 642-1475 643-1332 645-1237 645-1166 645-1094 643-1028 639-943 610-894 581-845 519-823L519-786Q583-764 613-715 643-666 645-580 647-496 647-424 647-353 645-268 640-126 576-63 511 0 368 0Z"/><path transform="translate(69.22 120.98) scale(0.075)" stroke-width="4.67" d="M326 13Q205 4 151-60 97-123 95-256 92-396 91-531 90-666 90-800 90-934 91-1069 92-1204 95-1344 97-1477 151-1540 205-1604 326-1613L326-1488Q281-1480 261-1451 241-1422 239-1367 235-1227 234-1087 232-946 232-804 232-662 234-520 236-377 239-233 241-178 261-149 281-121 326-112ZM414 13 414-112Q458-121 478-149 499-178 500-233 504-377 505-520 507-662 507-804 506-946 505-1087 503-1227 500-1367 499-1422 478-1450 458-1478 414-1488L414-1613Q536-1604 589-1541 642-1477 645-1344 647-1203 649-1068 650-933 650-799 650-666 649-531 647-396 645-256 642-123 589-59 536 4 414 13Z"/><path transform="translate(124.65 120.98) scale(0.075)" stroke-width="4.67" d="M326 13Q205 4 151-60 97-123 95-256 92-396 91-531 90-666 90-800 90-934 91-1069 92-1204 95-1344 97-1477 151-1540 205-1604 326-1613L326-1488Q281-1480 261-1451 241-1422 239-1367 235-1227 234-1087 232-946 232-804 232-662 234-520 236-377 239-233 241-178 261-149 281-121 326-112ZM414 13 414-112Q458-121 478-149 499-178 500-233 504-377 505-520 507-662 507-804 506-946 505-1087 503-1227 500-1367 499-1422 478-1450 458-1478 414-1488L414-1613Q536-1604 589-1541 642-1477 645-1344 647-1203 649-1068 650-933 650-799 650-666 649-531 647-396 645-256 642-123 589-59 536 4 414 13Z"/></g><text x="0" y="230.4" font-size="3.5" font-family="Arial, Helvetica, sans-serif">Sheet 1 of 1 · line 1: BOO</text><text x="0" y="235.4" font-size="3" font-family="Arial, Helvetica, sans-serif">Letters 12.0 cm (4.7 in) tall. Cut out the grey shapes; the white strips between them are the bridges: do not cut those.</text><g class="ps-ruler"><rect x="0" y="240.4" width="10" height="3" fill="#000" stroke="#000" stroke-width="0.2"/><rect x="10" y="240.4" width="10" height="3" fill="#fff" stroke="#000" stroke-width="0.2"/><rect x="20" y="240.4" width="10" height="3" fill="#000" stroke="#000" stroke-width="0.2"/><rect x="30" y="240.4" width="10" height="3" fill="#fff" stroke="#000" stroke-width="0.2"/><rect x="40" y="240.4" width="10" height="3" fill="#000" stroke="#000" stroke-width="0.2"/><rect x="50" y="240.4" width="10" height="3" fill="#fff" stroke="#000" stroke-width="0.2"/><rect x="60" y="240.4" width="10" height="3" fill="#000" stroke="#000" stroke-width="0.2"/><rect x="70" y="240.4" width="10" height="3" fill="#fff" stroke="#000" stroke-width="0.2"/><rect x="80" y="240.4" width="10" height="3" fill="#000" stroke="#000" stroke-width="0.2"/><rect x="90" y="240.4" width="10" height="3" fill="#fff" stroke="#000" stroke-width="0.2"/><text x="102" y="243.2" font-size="3.5" font-family="Arial, Helvetica, sans-serif" font-weight="bold">10 cm</text><text x="0" y="248.4" font-size="3" font-family="Arial, Helvetica, sans-serif">Measure this bar: if it is not 10 cm, your printer scaled the page. Print again at 100% (actual size).</text></g></svg><figcaption class="ps-cap">Sheet 1 of 1 (US Letter)</figcaption></figure></div>
+<noscript><p class="small">Changing the word or the size needs JavaScript. The stencil above is "BOO" for a 20 cm pumpkin face.</p></noscript>
+</div>
+<p class="small ps-credit">Letter shapes: <a href="https://github.com/xotypeco/big_shoulders" rel="noopener">Big Shoulders Stencil</a> by Patric King and the Big Shoulders Project Authors, used under the <a href="../assets/custom/pumpkin-stencil/OFL.txt">SIL Open Font License 1.1</a>. The chunky style is its Black weight, with the bridges of 0 4 6 8 9 A B D O P Q R a b d e g o p q widened by us. Everything is drawn in your browser; the text you type is not sent anywhere.</p>
+
+</section>
+<section class="cta" id="cta">
+<p class="note">We&#39;re considering a printable Halloween pack with a name on it: a door sign, treat-bag tags and a colouring page. One click tells us you&#39;d want it; no email needed.</p><button type="button" id="notify" data-cta>I&#39;d want a Halloween name pack</button>
+<p class="small">One click, no email asked. We only count the clicks.</p>
+<p class="thanks" id="cta-thanks" hidden>Thanks.</p>
+</section>
+<section class="how">
+
+</section>
+<section class="explainer"><h2>About this tool</h2>
+<p>Letters are hard to carve freehand because their inside shapes, the holes in A, B, D, O, P, Q and R, fall out when you cut around them. Stencil letters solve this with bridges: small uncut strips that hold each centre in place. This generator sets your text in a stencil typeface, so every letter with a hole comes with its bridges drawn in, ready to print and transfer.</p>
+<p>Measure the flattest face of your pumpkin from side to side and enter that width. The generator scales the letters to fit and moves a long word onto two lines or several sheets. Print at 100% rather than &#39;fit to page&#39;, tape the sheet to the pumpkin, then prick along the outlines with a pin or poking tool to transfer the design before you carve.</p>
+<p>Letters at least 4 cm (about 1.5 in) tall are easiest with a small carving saw, and the chunky style uses heavier letters with wider bridges, which suits thin-walled pumpkins. Children can choose the word and do the pricking; leave the cutting to an adult. The text you type is drawn in your browser and never sent to us.</p>
+</section>
+<section class="faq"><h2>Questions</h2>
+<h3>Can I use the stencils for painting instead of carving?</h3><p>Yes. Cut the letters out of the paper with a craft knife to make a paint stencil, or trace the outlines with a pencil and fill them with paint or a marker.</p>
+<h3>Why are some letters split into pieces?</h3><p>That is the bridge: a strip you do not cut, which keeps the middle of letters like O and A attached to the pumpkin.</p>
+<h3>How do I carve it, step by step?</h3><p>1. Print at 100% and check the ruler on the sheet (10 cm, or 4 in when you work in inches). 2. Tape the sheet to the flattest side, smoothing it as you go; on a very round pumpkin, cut the sheet between letters and tape each one flat. 3. Prick along every outline. 4. Remove the paper and cut the grey shapes, the small inside pieces first, leaving the bridges uncut. 5. For a long word on several sheets, tape the sheets side by side in order: each sheet is labelled with its sheet number and line.</p>
+</section>
+<footer class="foot">
+<p>Built by Trupo Holding Co. <a href="../">More free tools</a>.</p>
+<p class="ai">Written with AI: the text on this page was drafted with AI (Claude).</p>
+<p class="privacy">Privacy: no cookies, no analytics, nothing you type is sent to us. <a href="../privacy/">Privacy details</a>.</p>
+</footer>
+<script type="application/json" id="tool-spec">{"id":"w42-pumpkin-stencil-generator","page_type":"custom","cta":"notify","tool":{"name":"pumpkin-stencil"}}</script>
+</main>
+<script src="../assets/formula.js"></script>
+<script src="../assets/tool.js"></script>
+<script src="../assets/custom/pumpkin-stencil.js"></script>
+<script src="../assets/count.js"></script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+/* Pumpkin stencil generator. Loaded only by its own page (linked from tool.html). On screen the
+   sheets are scaled previews; in print each sheet is one page at its real size in mm. */
+.ps-results .ps-msg { font-weight: 600; }
+.ps-results .ps-warn { color: #8a5300; }
+.ps-results .ps-error { color: #a3240b; }
+.ps-form input[type=text] { width: 14em; }
+.ps-form .small { flex-basis: 100%; margin-left: 158px; }
+.ps-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.ps-sheets { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 12px; }
+.ps-sheet { margin: 0; flex: 1 1 260px; max-width: 360px; }
+.ps-sheet .ps-svg { display: block; width: 100%; height: auto; background: #fff; border: 1px solid var(--line, #d9dce1); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12); }
+.ps-cap { font-size: 0.85rem; color: var(--muted, #5f6368); margin-top: 4px; }
+@media (max-width: 560px) { .ps-form .small { margin-left: 0; } .ps-sheet { max-width: none; } }
+
+@page ps-letter { size: letter portrait; margin: 10mm; }
+@page ps-a4 { size: A4 portrait; margin: 10mm; }
+@media print {
+  @page { margin: 10mm; }
+  body > header, main > :not(.tool), .tool > :not(.ps-results), .ps-results > :not(.ps-sheets), .ps-cap { display: none !important; }
+  body, main, .tool, .ps-results { margin: 0 !important; padding: 0 !important; border: 0 !important; background: none !important; max-width: none !important; }
+  .ps-sheets { display: block; margin: 0; }
+  .ps-sheet { display: block; margin: 0; max-width: none; break-after: page; page-break-after: always; break-inside: avoid; }
+  .ps-sheet:last-child { break-after: auto; page-break-after: auto; }
+  .ps-sheet.ps-letter { page: ps-letter; }
+  .ps-sheet.ps-a4 { page: ps-a4; }
+  /* width/height auto: the SVG's own width and height attributes, in mm, apply */
+  .ps-sheet .ps-svg { width: auto; height: auto; border: 0; box-shadow: none; }
+}

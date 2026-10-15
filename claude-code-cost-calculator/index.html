@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Code Cost Calculator: Monthly Cost at API Rates</title>
+<meta name="description" content="Estimate what Claude Code costs per turn, day and month at API rates on Opus 5.5, Sonnet 5.5, Haiku 5.5 or Fable 5.1, cache reads and writes included.">
+<link rel="canonical" href="https://trupo-zz.github.io/claude-code-cost-calculator/">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body data-page="w42-claude-code-cost-calculator">
+<header class="top"><a href="../">Trupo Tools</a></header>
+<main>
+<h1>Claude Code Cost Calculator: Monthly Cost at API Rates</h1>
+<p class="value">See what a month of Claude Code costs at API rates, and how much of it is context re-read from the cache rather than new work.</p>
+<p class="notice" id="notice"><strong>Unofficial; not affiliated with Anthropic.</strong> Prices checked 2026-10-08.</p>
+<section class="tool" id="tool">
+<form class="calc" id="calc" autocomplete="off">
+<div class="field"><label for="in-model">Model</label><select id="in-model" name="model"><option value="1" selected>Claude Opus 5.5</option><option value="2">Claude Sonnet 5.5</option><option value="3">Claude Haiku 5.5</option><option value="4">Claude Fable 5.1</option></select></div>
+<div class="field"><label for="in-turns">Model turns per day</label><input id="in-turns" name="turns" type="number" inputmode="decimal" value="200" min="1" step="10"><span class="unit">turns</span></div>
+<div class="field"><label for="in-read_k">Context re-read per turn (cached)</label><input id="in-read_k" name="read_k" type="number" inputmode="decimal" value="80" min="0" step="5"><span class="unit">thousand tokens</span></div>
+<div class="field"><label for="in-write_k">New context per turn (cache write)</label><input id="in-write_k" name="write_k" type="number" inputmode="decimal" value="4" min="0" step="1"><span class="unit">thousand tokens</span></div>
+<div class="field"><label for="in-out_k">Output per turn</label><input id="in-out_k" name="out_k" type="number" inputmode="decimal" value="1" min="0" step="0.5"><span class="unit">thousand tokens</span></div>
+<div class="field"><label for="in-days">Working days per month</label><input id="in-days" name="days" type="number" inputmode="decimal" value="21" min="1" max="31" step="1"><span class="unit">days</span></div>
+<div class="results">
+<div class="result"><span class="rlabel">Cache read price</span><output id="out-p_read" aria-live="polite">$0.2 / M tokens</output></div>
+<div class="result"><span class="rlabel">Cache write price (5-minute)</span><output id="out-p_write" aria-live="polite">$5 / M tokens</output></div>
+<div class="result"><span class="rlabel">Output price</span><output id="out-p_out" aria-live="polite">$20 / M tokens</output></div>
+<div class="result"><span class="rlabel">Cost per turn</span><output id="out-turn_cost" aria-live="polite">$0.056</output></div>
+<div class="result"><span class="rlabel">Cost per day</span><output id="out-day_cost" aria-live="polite">$11.2</output></div>
+<div class="result"><span class="rlabel">Cost per month</span><output id="out-month_cost" aria-live="polite">$235.2</output></div>
+<div class="result"><span class="rlabel">Share of cost spent re-reading context</span><output id="out-reread_share" aria-live="polite">28.6%</output></div>
+</div>
+</form>
+</section>
+<section class="cta" id="cta">
+<p class="note">burn is our free, open-source command-line tool that reads your local Claude Code logs and shows your cost at API rates by model, from your own numbers instead of guesses.</p><button type="button" id="notify" data-cta>I&#39;d run burn on my own logs</button> <a class="cta-link" href="https://github.com/trupo-zz/burn" rel="noopener" data-out>Get burn on GitHub (free)</a>
+<p class="small">One click, no email asked. We only count the clicks.</p>
+<p class="thanks" id="cta-thanks" hidden>Thanks.</p>
+</section>
+<section class="how">
+<h2>How it works</h2>
+<ul class="formulas">
+<li><strong>Cache read price</strong> = if(Model = 1, 0.2, if(Model = 2, 0.1, if(Model = 3, if(Context re-read per turn (cached) + New context per turn (cache write) &gt; 100, 0.05, 0.01), 0.25)))</li>
+<li><strong>Cache write price (5-minute)</strong> = if(Model = 1, 5, if(Model = 2, 2.5, if(Model = 3, if(Context re-read per turn (cached) + New context per turn (cache write) &gt; 100, 0.625, 0.125), 12.5)))</li>
+<li><strong>Output price</strong> = if(Model = 1, 20, if(Model = 2, 10, if(Model = 3, if(Context re-read per turn (cached) + New context per turn (cache write) &gt; 100, 2.5, 0.5), 50)))</li>
+<li><strong>Cost per turn</strong> = (Context re-read per turn (cached) × Cache read price + New context per turn (cache write) × Cache write price (5-minute) + Output per turn × Output price) ÷ 1,000</li>
+<li><strong>Cost per day</strong> = Cost per turn × Model turns per day</li>
+<li><strong>Cost per month</strong> = Cost per day × Working days per month</li>
+<li><strong>Share of cost spent re-reading context</strong> = 100 × Context re-read per turn (cached) × Cache read price ÷ max(Context re-read per turn (cached) × Cache read price + New context per turn (cache write) × Cache write price (5-minute) + Output per turn × Output price, 0.000001)</li>
+</ul>
+<h3>Worked example</h3>
+<p>With Model = Claude Sonnet 5.5 (2), Model turns per day = 300 turns, Context re-read per turn (cached) = 120 thousand tokens, New context per turn (cache write) = 5 thousand tokens, Output per turn = 1.2 thousand tokens, Working days per month = 22 days: Cache read price = <strong>$0.1 / M tokens</strong>, Cache write price (5-minute) = <strong>$2.5 / M tokens</strong>, Output price = <strong>$10 / M tokens</strong>, Cost per turn = <strong>$0.0365</strong>, Cost per day = <strong>$10.95</strong>, Cost per month = <strong>$240.9</strong>, Share of cost spent re-reading context = <strong>32.9%</strong>.</p>
+</section>
+<section class="explainer"><h2>About this tool</h2>
+<p>Claude Code sends the whole conversation back to the model on every turn: your instructions, the files it has read and every earlier tool result. With prompt caching, the part that was already sent is billed at the cache-read rate, new context at the cache-write rate, and the model&#39;s reply at the output rate. This calculator multiplies those three amounts by the published per-million-token prices for the model you pick.</p>
+<p>Cache reads are cheap per token, but there are a lot of them. On Opus 5.5 a cache read costs $0.20 per million tokens, 5% of the $4 input price, while output costs $20 per million. A session carrying 80,000 tokens of context re-reads all of it on every turn, so over hundreds of turns the re-read can rival what you pay for output. In the sample report in burn&#39;s README (one heavy user&#39;s machine), 45% of the API-equivalent cost was context re-read from the cache.</p>
+<p>The defaults (200 turns a day, 80k tokens of context, 4k new tokens and 1k output tokens per turn) are a starting point, not a measurement. A turn is one model call, and one request in Claude Code often takes several turns, because each tool call is a turn. Haiku 5.5 is priced higher for prompts over 100,000 tokens, and the calculator switches to that tier when the per-turn context plus new tokens passes the line; it uses your per-turn figures as an average, so real sessions with some longer turns can cost more. Cache writes are priced at the 5-minute rate; the 1-hour cache costs more.</p>
+<p>On a Pro or Max subscription you are not billed per token, so treat the result as a rough gauge of how heavy your usage is, not a bill. To replace the guesses with your own numbers, run burn on your machine: it reads the local session logs, makes no network calls and prints your cost by model and the share spent re-reading context.</p>
+</section>
+<section class="faq"><h2>Questions</h2>
+<h3>Why is cached context billed at all?</h3><p>The cache saves the model from reprocessing the same tokens, so cache hits are billed at a small fraction of the input price rather than free. That fraction is 5% on Opus 5.5 and Sonnet 5.5, 10% on Haiku 5.5 ($0.01 of its $0.10 input price) and 2.5% on Fable 5.1.</p>
+<h3>Do Pro and Max plans pay these prices?</h3><p>No. Subscriptions include Claude Code usage up to plan limits instead of per-token billing. These prices apply when Claude Code runs on an API key billed through the Claude Platform.</p>
+<h3>Is a turn the same as a message I type?</h3><p>No. One message can trigger many model turns, because Claude Code makes a new model call after each tool use, such as reading a file or running a command.</p>
+<h3>What are tokens, context and a turn?</h3><p>A token is a small piece of text, roughly three quarters of a word. Context is everything Claude Code sends back to the model on each call: your instructions, files it has read and earlier results. A turn is one model call. One message you type can start several turns, one per tool use.</p>
+</section><section class="sources"><h2>Sources</h2><ul><li><a href="https://platform.claude.com/docs/en/about-claude/pricing" rel="noopener">Anthropic: Claude API pricing (model and prompt-caching prices)</a> (checked 2026-10-13)</li><li><a href="https://github.com/trupo-zz/burn" rel="noopener" data-out>burn: free, open-source Claude Code cost report (GitHub)</a> (checked 2026-10-12)</li></ul></section>
+<footer class="foot">
+<p>Built by Trupo Holding Co. <a href="../">More free tools</a>.</p>
+<p class="ai">Written with AI: the text on this page was drafted with AI (Claude). The formulas are shown on the page so you can check every result.</p>
+<p class="privacy">Privacy: no cookies, no analytics, nothing you type is sent to us. <a href="../privacy/">Privacy details</a>.</p>
+</footer>
+<script type="application/json" id="tool-spec">{"id":"w42-claude-code-cost-calculator","page_type":"calculator","cta":"notify","tool":{"inputs":[{"id":"model","label":"Model","type":"select","default":1,"options":[{"label":"Claude Opus 5.5","value":1},{"label":"Claude Sonnet 5.5","value":2},{"label":"Claude Haiku 5.5","value":3},{"label":"Claude Fable 5.1","value":4}]},{"id":"turns","label":"Model turns per day","type":"number","default":200,"min":1,"step":10,"unit":"turns"},{"id":"read_k","label":"Context re-read per turn (cached)","type":"number","default":80,"min":0,"step":5,"unit":"thousand tokens"},{"id":"write_k","label":"New context per turn (cache write)","type":"number","default":4,"min":0,"step":1,"unit":"thousand tokens"},{"id":"out_k","label":"Output per turn","type":"number","default":1,"min":0,"step":0.5,"unit":"thousand tokens"},{"id":"days","label":"Working days per month","type":"number","default":21,"min":1,"max":31,"step":1,"unit":"days"}],"outputs":[{"id":"p_read","label":"Cache read price","formula":"if(model == 1, 0.2, if(model == 2, 0.1, if(model == 3, if(read_k + write_k \u003e 100, 0.05, 0.01), 0.25)))","precision":2,"prefix":"$","suffix":" / M tokens"},{"id":"p_write","label":"Cache write price (5-minute)","formula":"if(model == 1, 5, if(model == 2, 2.5, if(model == 3, if(read_k + write_k \u003e 100, 0.625, 0.125), 12.5)))","precision":3,"prefix":"$","suffix":" / M tokens"},{"id":"p_out","label":"Output price","formula":"if(model == 1, 20, if(model == 2, 10, if(model == 3, if(read_k + write_k \u003e 100, 2.5, 0.5), 50)))","precision":2,"prefix":"$","suffix":" / M tokens"},{"id":"turn_cost","label":"Cost per turn","formula":"(read_k * p_read + write_k * p_write + out_k * p_out) / 1000","precision":4,"prefix":"$"},{"id":"day_cost","label":"Cost per day","formula":"turn_cost * turns","precision":2,"prefix":"$"},{"id":"month_cost","label":"Cost per month","formula":"day_cost * days","precision":2,"prefix":"$"},{"id":"reread_share","label":"Share of cost spent re-reading context","formula":"100 * read_k * p_read / max(read_k * p_read + write_k * p_write + out_k * p_out, 0.000001)","precision":1,"suffix":"%"}],"example":{"model":2,"turns":300,"read_k":120,"write_k":5,"out_k":1.2,"days":22}}}</script>
+</main>
+<script src="../assets/formula.js"></script>
+<script src="../assets/tool.js"></script>
+<script src="../assets/count.js"></script>
+</body>
+</html>

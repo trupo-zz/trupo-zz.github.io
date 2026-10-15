@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude API Cost vs Subscription: Compare Your Usage</title>
+<meta name="description" content="Compare what your Claude usage would cost at API rates on Opus 5.5, Sonnet 5.5 or Haiku 5.5 with the monthly price of a Pro or Max plan.">
+<link rel="canonical" href="https://trupo-zz.github.io/claude-api-vs-subscription/">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body data-page="w42-claude-api-vs-subscription">
+<header class="top"><a href="../">Trupo Tools</a></header>
+<main>
+<h1>Claude API Cost vs Subscription: Compare Your Usage</h1>
+<p class="value">Enter your usage to see what it would cost at Claude API rates each month, and how that compares with the price of a Pro or Max plan.</p>
+<p class="notice" id="notice"><strong>Unofficial; not affiliated with Anthropic.</strong> Prices checked 2026-10-08.</p>
+<section class="tool" id="tool">
+<form class="calc" id="calc" autocomplete="off">
+<div class="field"><label for="in-model">Model</label><select id="in-model" name="model"><option value="1">Claude Opus 5.5</option><option value="2" selected>Claude Sonnet 5.5</option><option value="3">Claude Haiku 5.5</option></select></div>
+<div class="field"><label for="in-turns">Model turns per day</label><input id="in-turns" name="turns" type="number" inputmode="decimal" value="200" min="1" step="10"><span class="unit">turns</span></div>
+<div class="field"><label for="in-read_k">Context re-read per turn (cached)</label><input id="in-read_k" name="read_k" type="number" inputmode="decimal" value="80" min="0" step="5"><span class="unit">thousand tokens</span></div>
+<div class="field"><label for="in-write_k">New context per turn (cache write)</label><input id="in-write_k" name="write_k" type="number" inputmode="decimal" value="4" min="0" step="1"><span class="unit">thousand tokens</span></div>
+<div class="field"><label for="in-out_k">Output per turn</label><input id="in-out_k" name="out_k" type="number" inputmode="decimal" value="1" min="0" step="0.5"><span class="unit">thousand tokens</span></div>
+<div class="field"><label for="in-days">Working days per month</label><input id="in-days" name="days" type="number" inputmode="decimal" value="21" min="1" max="31" step="1"><span class="unit">days</span></div>
+<div class="field"><label for="in-plan">Plan to compare with</label><select id="in-plan" name="plan"><option value="20">Pro, billed monthly ($20 a month)</option><option value="17">Pro, billed annually ($17 a month)</option><option value="100" selected>Max 5x ($100 a month)</option><option value="200">Max 20x ($200 a month)</option></select></div>
+<div class="results">
+<div class="result"><span class="rlabel">Cache read price</span><output id="out-p_read" aria-live="polite">$0.1 / M tokens</output></div>
+<div class="result"><span class="rlabel">Cache write price (5-minute)</span><output id="out-p_write" aria-live="polite">$2.5 / M tokens</output></div>
+<div class="result"><span class="rlabel">Output price</span><output id="out-p_out" aria-live="polite">$10 / M tokens</output></div>
+<div class="result"><span class="rlabel">API-equivalent cost per month</span><output id="out-api_month" aria-live="polite">$117.6</output></div>
+<div class="result"><span class="rlabel">Plan price per month</span><output id="out-plan_price" aria-live="polite">$100</output></div>
+<div class="result"><span class="rlabel">API cost minus plan price</span><output id="out-diff" aria-live="polite">$17.6</output></div>
+<div class="result"><span class="rlabel">API cost as a share of plan price</span><output id="out-pct" aria-live="polite">118%</output></div>
+</div>
+</form>
+</section>
+<section class="cta" id="cta">
+<p class="note">burn is our free, open-source command-line tool that reads your local Claude Code logs and shows your cost at API rates by model, so you can put your real usage into this comparison.</p><button type="button" id="notify" data-cta>I&#39;d run burn on my own logs</button> <a class="cta-link" href="https://github.com/trupo-zz/burn" rel="noopener" data-out>Get burn on GitHub (free)</a>
+<p class="small">One click, no email asked. We only count the clicks.</p>
+<p class="thanks" id="cta-thanks" hidden>Thanks.</p>
+</section>
+<section class="how">
+<h2>How it works</h2>
+<ul class="formulas">
+<li><strong>Cache read price</strong> = if(Model = 1, 0.2, if(Model = 2, 0.1, if(Context re-read per turn (cached) + New context per turn (cache write) &gt; 100, 0.05, 0.01)))</li>
+<li><strong>Cache write price (5-minute)</strong> = if(Model = 1, 5, if(Model = 2, 2.5, if(Context re-read per turn (cached) + New context per turn (cache write) &gt; 100, 0.625, 0.125)))</li>
+<li><strong>Output price</strong> = if(Model = 1, 20, if(Model = 2, 10, if(Context re-read per turn (cached) + New context per turn (cache write) &gt; 100, 2.5, 0.5)))</li>
+<li><strong>API-equivalent cost per month</strong> = (Context re-read per turn (cached) × Cache read price + New context per turn (cache write) × Cache write price (5-minute) + Output per turn × Output price) ÷ 1,000 × Model turns per day × Working days per month</li>
+<li><strong>Plan price per month</strong> = Plan to compare with</li>
+<li><strong>API cost minus plan price</strong> = API-equivalent cost per month - Plan price per month</li>
+<li><strong>API cost as a share of plan price</strong> = 100 × API-equivalent cost per month ÷ Plan price per month</li>
+</ul>
+<h3>Worked example</h3>
+<p>With Model = Claude Opus 5.5 (1), Model turns per day = 120 turns, Context re-read per turn (cached) = 60 thousand tokens, New context per turn (cache write) = 3 thousand tokens, Output per turn = 1 thousand tokens, Working days per month = 20 days, Plan to compare with = Max 5x ($100 a month) (100): Cache read price = <strong>$0.2 / M tokens</strong>, Cache write price (5-minute) = <strong>$5 / M tokens</strong>, Output price = <strong>$20 / M tokens</strong>, API-equivalent cost per month = <strong>$112.8</strong>, Plan price per month = <strong>$100</strong>, API cost minus plan price = <strong>$12.8</strong>, API cost as a share of plan price = <strong>113%</strong>.</p>
+</section>
+<section class="explainer"><h2>About this tool</h2>
+<p>This calculator prices your Claude Code usage the way the API would bill it, then sets that figure beside a plan&#39;s monthly price. For each model turn it multiplies the thousands of tokens re-read from the cache, newly written to the cache and generated as output by the published price per million tokens, then by your turns per day and working days per month. Plan prices are Pro at $20 a month (or $200 billed up front for a year, which Anthropic shows as $17 a month), Max 5x at $100 and Max 20x at $200. The difference is the API-equivalent cost minus the plan price, so a negative number means the plan costs more than the same usage would at API rates.</p>
+<p>Plan limits are not published as token counts, and that is the main limit of any comparison. Anthropic says every plan has usage limits that reset on a rolling five-hour session window, with weekly limits on top for paid plans, and that how much you get depends on the length and complexity of your conversations, the model you choose and the features you use. There is no fixed message or token allowance to divide by, and Claude Code draws from the same pool as your chats. So this page cannot tell you whether your usage would fit inside a plan. It only compares your usage at API rates with the plan price.</p>
+<p>Read the percentage as a gauge, not a verdict. A figure well above 100% means the usage would cost more at API rates than the plan does, but only if the plan&#39;s limits let you do that much work. A figure well below 100% means pay-as-you-go through an API key would have cost less for that usage, though it would not include the other features of a plan. The defaults (200 turns a day, 80k tokens re-read, 4k new, 1k output, 21 days) are a starting point. Haiku 5.5 is priced higher for prompts over 100,000 tokens (the calculator tests your per-turn average, so sessions with some longer turns can cost more), and cache writes use the 5-minute rate. For your real numbers, run burn, which reads your local Claude Code logs and makes no network calls.</p>
+</section>
+<section class="faq"><h2>Questions</h2>
+<h3>Do Pro and Max plans charge per token?</h3><p>No. They are flat monthly prices with usage limits, not per-token billing. Per-token prices apply when you use an API key. Max is monthly only; Pro is $20 billed monthly, or $200 billed up front for a year, which Anthropic shows as $17 a month.</p>
+<h3>Which API prices does the calculator use?</h3><p>Anthropic&#39;s published prices per million tokens. Opus 5.5: $0.20 cache read, $5 cache write, $20 output. Sonnet 5.5: $0.10, $2.50 and $10. Haiku 5.5: $0.01, $0.125 and $0.50, rising to $0.05, $0.625 and $2.50 for prompts over 100,000 tokens. Cache writes are the 5-minute rate.</p>
+<h3>Are app-store subscription prices the same?</h3><p>Not always. Anthropic&#39;s Max plan help page says its prices are for web subscriptions and that mobile pricing may vary by app platform. Prices and plans can also change, so check the pricing pages linked under Sources.</p>
+<h3>What are tokens, context and a turn?</h3><p>A token is a small piece of text, roughly three quarters of a word. Context is everything Claude Code sends back to the model on each call: your instructions, files it has read and earlier results. A turn is one model call. One message you type can start several turns, one per tool use.</p>
+</section><section class="sources"><h2>Sources</h2><ul><li><a href="https://platform.claude.com/docs/en/about-claude/pricing" rel="noopener">Anthropic: Claude API pricing (model and prompt-caching prices)</a> (checked 2026-10-13)</li><li><a href="https://claude.com/pricing" rel="noopener">Anthropic: Claude plans and pricing (Pro, Max, usage limits)</a> (checked 2026-10-13)</li><li><a href="https://support.claude.com/en/articles/11049741" rel="noopener">Anthropic Help Center: What is the Max plan? (Max 5x $100, Max 20x $200)</a> (checked 2026-10-13)</li><li><a href="https://github.com/trupo-zz/burn" rel="noopener" data-out>burn: free, open-source Claude Code cost report (GitHub)</a> (checked 2026-10-12)</li></ul></section>
+<footer class="foot">
+<p>Built by Trupo Holding Co. <a href="../">More free tools</a>.</p>
+<p class="ai">Written with AI: the text on this page was drafted with AI (Claude). The formulas are shown on the page so you can check every result.</p>
+<p class="privacy">Privacy: no cookies, no analytics, nothing you type is sent to us. <a href="../privacy/">Privacy details</a>.</p>
+</footer>
+<script type="application/json" id="tool-spec">{"id":"w42-claude-api-vs-subscription","page_type":"calculator","cta":"notify","tool":{"inputs":[{"id":"model","label":"Model","type":"select","default":2,"options":[{"label":"Claude Opus 5.5","value":1},{"label":"Claude Sonnet 5.5","value":2},{"label":"Claude Haiku 5.5","value":3}]},{"id":"turns","label":"Model turns per day","type":"number","default":200,"min":1,"step":10,"unit":"turns"},{"id":"read_k","label":"Context re-read per turn (cached)","type":"number","default":80,"min":0,"step":5,"unit":"thousand tokens"},{"id":"write_k","label":"New context per turn (cache write)","type":"number","default":4,"min":0,"step":1,"unit":"thousand tokens"},{"id":"out_k","label":"Output per turn","type":"number","default":1,"min":0,"step":0.5,"unit":"thousand tokens"},{"id":"days","label":"Working days per month","type":"number","default":21,"min":1,"max":31,"step":1,"unit":"days"},{"id":"plan","label":"Plan to compare with","type":"select","default":100,"options":[{"label":"Pro, billed monthly ($20 a month)","value":20},{"label":"Pro, billed annually ($17 a month)","value":17},{"label":"Max 5x ($100 a month)","value":100},{"label":"Max 20x ($200 a month)","value":200}]}],"outputs":[{"id":"p_read","label":"Cache read price","formula":"if(model == 1, 0.2, if(model == 2, 0.1, if(read_k + write_k \u003e 100, 0.05, 0.01)))","precision":2,"prefix":"$","suffix":" / M tokens"},{"id":"p_write","label":"Cache write price (5-minute)","formula":"if(model == 1, 5, if(model == 2, 2.5, if(read_k + write_k \u003e 100, 0.625, 0.125)))","precision":3,"prefix":"$","suffix":" / M tokens"},{"id":"p_out","label":"Output price","formula":"if(model == 1, 20, if(model == 2, 10, if(read_k + write_k \u003e 100, 2.5, 0.5)))","precision":2,"prefix":"$","suffix":" / M tokens"},{"id":"api_month","label":"API-equivalent cost per month","formula":"(read_k * p_read + write_k * p_write + out_k * p_out) / 1000 * turns * days","precision":2,"prefix":"$"},{"id":"plan_price","label":"Plan price per month","formula":"plan","precision":0,"prefix":"$"},{"id":"diff","label":"API cost minus plan price","formula":"api_month - plan_price","precision":2,"prefix":"$"},{"id":"pct","label":"API cost as a share of plan price","formula":"100 * api_month / plan_price","precision":0,"suffix":"%"}],"example":{"model":1,"turns":120,"read_k":60,"write_k":3,"out_k":1,"days":20,"plan":100}}}</script>
+</main>
+<script src="../assets/formula.js"></script>
+<script src="../assets/tool.js"></script>
+<script src="../assets/count.js"></script>
+</body>
+</html>
